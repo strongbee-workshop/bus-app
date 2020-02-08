@@ -1,9 +1,11 @@
 package com.workshop.sb.testworkshop.controller;
 
 import com.workshop.sb.testworkshop.model.request.DriverRequest;
+import com.workshop.sb.testworkshop.model.response.BaseResponse;
 import com.workshop.sb.testworkshop.model.response.DriverResponse;
 import com.workshop.sb.testworkshop.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,36 @@ public class DriverController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getDriverById(@PathVariable("id") int id) {
-        DriverResponse driver = driverService.getDataDriverById(id);
-        if (driver != null) {
-            return ResponseEntity.ok(driver);
+    public ResponseEntity<BaseResponse> getDriverById(@PathVariable("id") int id) {
+        DriverResponse driver = null;
+        ResponseEntity<BaseResponse> responseEntity = null;
+        try {
+            driver = driverService.getDataDriverById(id);
+            if (driver != null) {
+                BaseResponse response = new BaseResponse();
+                response.setStatus("Ok");
+                response.setResult(driver);
+                response.setMessage("success");
+
+                responseEntity = new ResponseEntity(response, HttpStatus.OK);
+            } else {
+                BaseResponse response = new BaseResponse();
+                response.setStatus("Ok");
+                response.setResult(null);
+                response.setMessage("No Data Exist");
+
+                responseEntity = new ResponseEntity(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            BaseResponse response = new BaseResponse();
+            response.setStatus("Error");
+            response.setResult(e.getMessage());
+            response.setMessage("Data Not Found");
+
+            responseEntity = new ResponseEntity(response, HttpStatus.BAD_REQUEST );
         }
-        return (ResponseEntity) ResponseEntity.badRequest();
+
+        return responseEntity;
     }
 
     @PutMapping()

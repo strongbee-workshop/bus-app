@@ -20,7 +20,7 @@ public class DriverService {
         driverRepository.save(driverData);
     }
 
-    public DriverResponse getDataDriverById(int id) {
+    public DriverResponse getDataDriverById(int id) throws Exception {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if(optionalDriver.isPresent()){
             DriverResponse response = new DriverResponse();
