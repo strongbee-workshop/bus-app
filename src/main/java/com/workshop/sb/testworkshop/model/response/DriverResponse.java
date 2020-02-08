@@ -1,8 +1,8 @@
-package com.workshop.sb.testworkshop.model;
+package com.workshop.sb.testworkshop.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DriverRequest {
+public class DriverResponse {
     @JsonProperty("id")
     private Integer id;
 

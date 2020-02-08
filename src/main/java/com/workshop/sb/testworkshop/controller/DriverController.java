@@ -1,20 +1,20 @@
 package com.workshop.sb.testworkshop.controller;
 
-import com.workshop.sb.testworkshop.model.DriverRequest;
+import com.workshop.sb.testworkshop.model.request.DriverRequest;
+import com.workshop.sb.testworkshop.model.response.DriverResponse;
 import com.workshop.sb.testworkshop.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/driver")
 public class DriverController {
 
     @Autowired
     private DriverService driverService;
 
-    @PostMapping("/driver")
+    @PostMapping()
     public ResponseEntity AddNewDriver(@RequestBody DriverRequest request) {
         try {
             driverService.addNewDriver(request);
@@ -23,5 +23,29 @@ public class DriverController {
             e.printStackTrace();
             return (ResponseEntity) ResponseEntity.badRequest();
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getDriverById(@PathVariable("id") int id) {
+        DriverResponse driver = driverService.getDataDriverById(id);
+        if (driver != null) {
+            return ResponseEntity.ok(driver);
+        }
+        return (ResponseEntity) ResponseEntity.badRequest();
+    }
+
+    @PutMapping()
+    public ResponseEntity updateDataDriver() {
+        return null;
+    }
+
+    @DeleteMapping()
+    public ResponseEntity removeDataDriverById(@PathVariable int id) {
+        return null;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllDataDriver() {
+        return null;
     }
 }
